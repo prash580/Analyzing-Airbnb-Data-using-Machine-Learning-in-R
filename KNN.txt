@@ -1,0 +1,28 @@
+>df<-read.csv('KNN.csv',header=TRUE)    #Importing the csv file into R
+
+>str(df)				#To check the structure of data frame which consists of imported data
+
+>head(df)                               #Displays the first few values of the data frame
+
+> set.seed(9850)			#This function generates a sequence of random numbers
+
+> rn<-runif(nrow(df))                   #generate n uniform random numbers, here n=no. of rows in data frame
+
+> df<-df[order(rn),]			# rearranges the data in the data frame in the sequence of random numbers generated
+
+normalize<-function(x) {
+    return (( x-min(x)/max(x) - min(x) )) }     #This function normalizes the numerical values
+
+
+> df_new<-as.data.frame(lapply(df[,c(2,3,4,5,6)],normalize)) #Normalizing the numerical vectors
+
+> knn_train<-df_new[1:1000,]       #Split the data into train and test
+
+> knn_test<-df_new[1001:1155,]
+> knn_train_target<-df[1:1000,1]
+> knn_test_target<-df[1001:1155,1]
+> model<-knn(train=knn_train,test=knn_test,cl=knn_train_target,k=24)   #Calling knn algorithm with k being the square root of the total no. of rows in data
+
+> table(knn_test_target,model)		#Generates a table of actual vs predicted outcomes
+
+> confusionMatrix(table(model,knn_test_target))  #Generates a set of results which denotes the accuracy of model, Kappa, Sensitivity,Specificity of the model and so on..
