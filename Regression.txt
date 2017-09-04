@@ -1,0 +1,55 @@
+reg<-read.csv('newreg.csv',header=TRUE)
+> reg2<-reg[,c(3,4,5,6,8,10,11,13)]   # Take the subset of the dataset containing the predictor variables
+> pairs.panels(reg2,col="violet")        #visualize the correlation and distribution of the predictor variables
+> model<-lm(price~room_type+bathrooms+beds+security_deposit+extra_people+guests_included+number_of_reviews,data=reg)
+> summary(model)
+
+Call:
+lm(formula = price ~ room_type + bathrooms + beds + security_deposit + 
+    extra_people + guests_included + number_of_reviews, data = reg)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-229.52  -34.79   -0.06   29.68  568.34 
+
+Coefficients:
+                       Estimate Std. Error t value Pr(>|t|)    
+(Intercept)             2.24779   23.28802   0.097  0.92323    
+room_typePrivate room -35.72050   17.60082  -2.029  0.04413 *  
+room_typeShared room  -79.83412   19.57789  -4.078 7.27e-05 ***
+bathrooms              28.58114   13.14532   2.174  0.03121 *  
+beds                   36.90858    6.16195   5.990 1.43e-08 ***
+security_deposit        0.07813    0.03133   2.494  0.01369 *  
+extra_people            0.62883    0.44388   1.417  0.15860    
+guests_included        18.95016    6.06895   3.122  0.00214 ** 
+number_of_reviews      -0.36847    0.11124  -3.313  0.00115 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 74.64 on 154 degrees of freedom
+Multiple R-squared:  0.6533,	Adjusted R-squared:  0.6353 
+F-statistic: 36.27 on 8 and 154 DF,  p-value: < 2.2e-16
+
+> predict(model,data.frame("room_type"="Private room","bathrooms"=1,"beds"=1,"security_deposit"=150,"guests_included"=2,"extra_people"=10,"number_of_reviews"=152))
+       1 
+31.91752 
+> plot(model)
+Hit <Return> to see next plot: 
+Hit <Return> to see next plot: 
+Hit <Return> to see next plot: 
+Hit <Return> to see next plot: 
+> predict(model,data.frame("room_type"="Entire home/apt","bathrooms"=1,"beds"=3,"security_deposit"=200,"guests_included"=2,"extra_people"=10,"number_of_reviews"=39))
+       1 
+186.9984 
+> predict(model,data.frame("room_type"="Entire home/apt","bathrooms"=2,"beds"=3,"security_deposit"=450,"guests_included"=6,"extra_people"=0,"number_of_reviews"=39))
+       1 
+304.6235 
+> predict(model,data.frame("room_type"="Entire home/apt","bathrooms"=1,"beds"=1,"security_deposit"=100,"guests_included"=2,"extra_people"=30,"number_of_reviews"=8))
+       1 
+129.3678 
+> predict(model,data.frame("room_type"="Entire home/apt","bathrooms"=2,"beds"=3,"security_deposit"=300,"guests_included"=6,"extra_people"=25,"number_of_reviews"=20))
+       1 
+315.6263 
+> predict(model,data.frame("room_type"="Entire home/apt","bathrooms"=1,"beds"=4,"security_deposit"=300,"guests_included"=4,"extra_people"=35,"number_of_reviews"=38))
+       1 
+285.7093 
